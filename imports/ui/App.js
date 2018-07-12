@@ -1,36 +1,44 @@
-import React from 'react';
+import React from "react";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-import CollectionForm from './CollectionForm';
-import RegisterForm from './RegisterForm';
-import LoginForm from './LoginForm';
+import { withApollo } from "react-apollo";
+import ShoeCollectionForm from "./ShoeCollectionForm";
+import RegisterForm from "./RegisterForm";
+import LoginForm from "./LoginForm";
 
-const App = ({ loading, shoeCollections }) => {
-if(loading) return null;
-return(
-<div>
-    <RegisterForm />
-    <LoginForm />
-    <CollectionForm />
-    <button onClick={() => Meteor.logout()}>Logout</button>
-    <ul>
+const App = ({ loading, shoeCollections, client }) => {
+  if (loading) return null;
+  return (
+    <div>
+      <button
+        onClick={() => {
+          Meteor.logout();
+          client.resetStore();
+        }}
+      >
+        Logout
+      </button>
+      <RegisterForm client={client} />
+      <LoginForm client={client} />
+      <ShoeCollectionForm />
+      <ul>
         {shoeCollections.map(shoeCollection => (
-            <li key={shoeCollection._id}>{shoeCollection.name}</li>
+          <li key={shoeCollection._id}>{shoeCollection.name}</li>
         ))}
-    </ul>
-</div>
-)
+      </ul>
+    </div>
+  );
 };
 
-const collectionQuery = gql`
-query Collections {
-	shoeCollections {
-    _id
-    name
+const shoeCollectionsQuery = gql`
+  query ShoeCollections {
+    shoeCollections {
+      _id
+      name
+    }
   }
-}
 `;
 
-export default graphql(collectionQuery, {
-    props: ({data}) => ({...data })
-})(App);
+export default graphql(shoeCollectionsQuery, {
+  props: ({ data }) => ({ ...data })
+})(withApollo(App));

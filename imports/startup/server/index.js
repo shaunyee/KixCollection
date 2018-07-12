@@ -1,2 +1,2 @@
-import './register-api'
+import "./register-api";
 import './accounts';

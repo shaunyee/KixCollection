@@ -1,41 +1,34 @@
-import ShoeCollectionSchema from '../../api/collections/ShoeCollection.graphql';
 import { createApolloServer } from "meteor/apollo";
 import { makeExecutableSchema } from "graphql-tools";
-import ShoeCollectionResolvers from '../../api/collections/resolvers';
+import merge from "lodash/merge";
 
-import merge from 'lodash/merge';
+import ShoeCollectionsSchema from "../../api/shoeCollections/ShoeCollections.graphql";
+import ShoeCollectionsResolvers from "../../api/shoeCollections/resolvers";
 
-
-import './register-api';
-
-// fdjk
+// hsdaddfdffdssafsavfdvfd
 
 const testSchema = `
 type Query {
-    hi: String
-    shoeCollections : [ShoeCollection]
+  hi: String
+  shoeCollections: [ShoeCollection]
 }
-`
+`;
 
-const typeDefs = [
-    testSchema,
-    ShoeCollectionSchema
-];
+const typeDefs = [testSchema, ShoeCollectionsSchema];
 
-
-const testresolver = {
-    Query: {
-        hi() {
-            return "Hello Shaun"
-        }
+const testResolvers = {
+  Query: {
+    hi() {
+      return "Hello Shaun";
     }
+  }
 };
 
-const resolvers = merge(testresolver, ShoeCollectionResolvers);
+const resolvers = merge(testResolvers, ShoeCollectionsResolvers);
 
 const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers
-})
+  typeDefs,
+  resolvers
+});
 
-createApolloServer({schema});
+createApolloServer({ schema });
