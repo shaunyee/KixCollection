@@ -1,0 +1,9 @@
+
+type ShoeCollection {
+    _id: String!
+    name: String!
+}
+
+type Mutation {
+    createCollection(name: String!): ShoeCollection
+}
