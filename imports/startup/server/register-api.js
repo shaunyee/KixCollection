@@ -3,28 +3,18 @@ import { makeExecutableSchema } from "graphql-tools";
 import merge from "lodash/merge";
 
 import ShoeCollectionsSchema from "../../api/shoeCollections/ShoeCollections.graphql";
+import UsersSchema from "../../api/users/User.graphql";
+import ShoeSchema from "../../api/shoes/Shoe.graphql";
 import ShoeCollectionsResolvers from "../../api/shoeCollections/resolvers";
+import UsersResolvers from "../../api/users/resolvers";
+import ShoesResolvers from "../../api/shoes/resolvers";
 
-// hsdaddfdffdssafsavfdvfd
+// h=fdfdf
 
-const testSchema = `
-type Query {
-  hi: String
-  shoeCollections: [ShoeCollection]
-}
-`;
 
-const typeDefs = [testSchema, ShoeCollectionsSchema];
+const typeDefs = [ShoeCollectionsSchema, ShoeSchema, UsersSchema];
 
-const testResolvers = {
-  Query: {
-    hi() {
-      return "Hello Shaun";
-    }
-  }
-};
-
-const resolvers = merge(testResolvers, ShoeCollectionsResolvers);
+const resolvers = merge(ShoeCollectionsResolvers, ShoesResolvers ,UsersResolvers);
 
 const schema = makeExecutableSchema({
   typeDefs,

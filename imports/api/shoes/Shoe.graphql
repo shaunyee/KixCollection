@@ -1,0 +1,10 @@
+type Shoe {
+    _id: String
+    name: String
+    trade: Boolean
+}
+
+extend type Mutation {
+    createShoe(name: String!, shoeCollectionId: String!): Shoe
+    toggleTrade(_id: String!): Shoe
+}

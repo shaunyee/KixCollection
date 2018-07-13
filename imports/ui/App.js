@@ -1,31 +1,25 @@
-import React from "react";
+import React, { Fragment } from "react";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { withApollo } from "react-apollo";
 import ShoeCollectionForm from "./ShoeCollectionForm";
-import RegisterForm from "./RegisterForm";
-import LoginForm from "./LoginForm";
+import ShoeCollection from "./shoeCollections/ShoeCollection";
+import Header from "./header/Header";
+import Loading from "./utilities/Loading";
 
-const App = ({ loading, shoeCollections, client }) => {
-  if (loading) return null;
+
+
+const App = ({ loading, shoeCollections, client, user }) => {
+  if (loading) return <Loading />;
   return (
     <div>
-      <button
-        onClick={() => {
-          Meteor.logout();
-          client.resetStore();
-        }}
-      >
-        Logout
-      </button>
-      <RegisterForm client={client} />
-      <LoginForm client={client} />
-      <ShoeCollectionForm />
-      <ul>
-        {shoeCollections.map(shoeCollection => (
-          <li key={shoeCollection._id}>{shoeCollection.name}</li>
-        ))}
-      </ul>
+      <Header user={user} client={client} />
+      { user._id &&
+        <ShoeCollectionForm />
+      }
+      { user._id && (
+      <ShoeCollection shoeCollections={shoeCollections}/>
+      )}
     </div>
   );
 };
@@ -35,6 +29,14 @@ const shoeCollectionsQuery = gql`
     shoeCollections {
       _id
       name
+      shoes {
+        _id
+        name
+        trade
+      }
+    }
+    user {
+      _id
     }
   }
 `;

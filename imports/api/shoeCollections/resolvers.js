@@ -1,4 +1,5 @@
 import ShoeCollections from "./shoeCollections";
+import Shoes from "../shoes/shoes";
 
 export default {
   Query: {
@@ -9,13 +10,25 @@ export default {
     }
   },
 
+  ShoeCollection: {
+    shoes: (shoeCollection) => {
+      return Shoes.find({
+        shoeCollectionId: shoeCollection._id
+      }).fetch()
+    }
+  },
+
   Mutation: {
     createshoeCollection(obj, { name }, { userId }) {
-      const shoeCollectionId = ShoeCollections.insert({
-        name,
-        userId
-      });
-      return ShoeCollections.findOne(shoeCollectionId);
+      if(userId) {
+
+        const shoeCollectionId = ShoeCollections.insert({
+          name,
+          userId
+        });
+        return ShoeCollections.findOne(shoeCollectionId);
+      }
+      throw new Error("Unauthorized");
     }
   }
 };

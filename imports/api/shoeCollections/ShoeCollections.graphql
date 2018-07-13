@@ -1,8 +1,13 @@
 type ShoeCollection {
   _id: String!
   name: String!
+  shoes: [Shoe]
 }
 
 type Mutation {
   createshoeCollection(name: String!): ShoeCollection
+}
+
+type Query {
+  shoeCollections: [ShoeCollection]
 }
